@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Bigstoredb" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Bigstoredb.mdf;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BigstoredbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="CatNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CatName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CatDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Category_Product" Member="Products" ThisKey="CatNo" OtherKey="CatNo" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Member" Member="Members">
+    <Type Name="Member">
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Member_Order" Member="Orders" ThisKey="EmailAddress" OtherKey="EmailAddress" Type="Order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderDetails" Member="OrderDetails">
+    <Type Name="OrderDetail">
+      <Column Name="CatNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProdNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OrderNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SellPrice" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
+      <Column Name="Descount" Type="System.Decimal" DbType="Decimal(3,2)" CanBeNull="true" />
+      <Association Name="Product_OrderDetail" Member="Product" ThisKey="CatNo,ProdNo" OtherKey="CatNo,ProdNo" Type="Product" IsForeignKey="true" />
+      <Association Name="Order_OrderDetail" Member="Order" ThisKey="OrderNo" OtherKey="OrderNo" Type="Order" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Orders" Member="Orders">
+    <Type Name="Order">
+      <Column Name="OrderNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ShipName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="ShipCity" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="ShipArea" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="ShipAddress" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="EmailAddress" Type="System.String" CanBeNull="false" />
+      <Association Name="Order_OrderDetail" Member="OrderDetails" ThisKey="OrderNo" OtherKey="OrderNo" Type="OrderDetail" />
+      <Association Name="Member_Order" Member="Member" ThisKey="EmailAddress" OtherKey="EmailAddress" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Product" Member="Products">
+    <Type Name="Product">
+      <Column Name="CatNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProdNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProdName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ProdPrice" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
+      <Column Name="ProdQuantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProdAddDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ProdDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Product_OrderDetail" Member="OrderDetails" ThisKey="CatNo,ProdNo" OtherKey="CatNo,ProdNo" Type="OrderDetail" />
+      <Association Name="Category_Product" Member="Category" ThisKey="CatNo" OtherKey="CatNo" Type="Category" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
